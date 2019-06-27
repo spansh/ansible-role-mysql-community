@@ -12,7 +12,7 @@
   register: p
 
 - name: Initialise MySQL Community Server
-  command: mysqld --initialize --user=mysql
+  command: mysqld --initialize --user=mysql --explicit_defaults_for_timestamp
   when: not p.stat.exists
 
 - name: Enable and run MySQL Community Server
