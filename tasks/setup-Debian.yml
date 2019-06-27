@@ -7,6 +7,15 @@
   template: src=my.cnf.j2 dest={{ mysql_cfg_cnffile }}
   notify: Restart MySQL Community Server
 
+- name: Check if MySQL database exists
+  stat: path="{{ mysql_cfg_datadir }}/mysql"
+  register: p
+  when: p.stat.isdir is defined and p.stat.isdir
+
+- name: Initialise MySQL Community Server
+  command: mysqld --initialize --user=mysql
+  when: not p.stat.exists
+
 - name: Enable and run MySQL Community Server
   service: name={{ mysql_service }} enabled=yes state=started
 
